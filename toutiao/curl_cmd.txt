@@ -1,0 +1,13 @@
+curl 'https://www.toutiao.com/api/pc/list/user/feed?category=my_favorites&token=example&max_behot_time=0&aid=24&app_name=toutiao_web&_signature=example' \
+  -H 'authority: www.toutiao.com' \
+  -H 'accept: application/json, text/plain, */*' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'cookie: csrftoken=example' \
+  -H 'referer: https://www.toutiao.com/c/user/token/example' \
+  -H 'sec-ch-ua: "Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
