@@ -11,7 +11,8 @@ import requests
 
 def read_curl():
     with open('curl_cmd.txt', 'r') as f:
-        curl_cmd = f.read()
+        # curlparser currently not support parameter 'compressed'
+        curl_cmd = f.read().replace('--compressed', '')
     curl = curlparser.parse(curl_cmd)
     # trim the bank of string
     headers = {key: value.strip() for key, value in curl.header.items()}
