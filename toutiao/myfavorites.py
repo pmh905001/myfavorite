@@ -3,18 +3,19 @@ import json
 import logging
 import random
 import time
+from urllib.parse import urlsplit, urlunsplit, parse_qs, urlencode
 
 import curlparser
 import requests
-from urllib.parse import urlsplit, urlunsplit, parse_qs, urlencode
 
 
 def read_curl():
     with open('curl_cmd.txt', 'r') as f:
         curl_cmd = f.read()
-    result = curlparser.parse(curl_cmd)
-    headers = {key: value.strip() for key, value in result.header.items()}
-    return result.url, headers
+    curl = curlparser.parse(curl_cmd)
+    # trim the bank of string
+    headers = {key: value.strip() for key, value in curl.header.items()}
+    return curl.url, headers
 
 
 def get_page(url, headers, max_behot_time=0):
@@ -42,8 +43,8 @@ def write_page(page):
     for item in page['data']:
         try:
             print(f"{item['id']}: {item['title']}   => {item['share_url']}")
-        # except UnicodeEncodeError as ex:
-        except Exception as ex:
+        # Fixme: UnicodeEncodeError
+        except UnicodeEncodeError:
             logging.exception('occurred exception when print')
 
 
