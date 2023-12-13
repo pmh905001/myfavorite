@@ -10,7 +10,7 @@ import requests
 
 
 def read_curl():
-    with open('curl_cmd.txt', 'r') as f:
+    with open('curl_cmd2.txt', 'r') as f:
         # curlparser currently not support parameter 'compressed'
         curl_cmd = f.read().replace('--compressed', '')
     curl = curlparser.parse(curl_cmd)
