@@ -19,6 +19,7 @@ def insert(conn, page: str):
 def import_to_sqlite():
     conn = sqlite3.connect(r'..\myfav.db')
     lines = read_lines()
+    # reverse records due start from old
     pages = list(reversed(lines))
     for index, page in enumerate(pages):
         print(f'page: {index}')
