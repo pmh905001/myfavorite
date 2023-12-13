@@ -9,6 +9,7 @@ def read_lines():
 
 
 def insert(conn, page: str):
+    # # reverse records due start from old
     infos = list(reversed(json.loads(page).get('data', [])))
     if infos:
         records = [json.dumps(r, ensure_ascii=False) for r in infos]
