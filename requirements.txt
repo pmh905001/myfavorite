@@ -1,1 +1,2 @@
 curlparser==0.1.0
+pymongo==4.6.1
