@@ -29,7 +29,7 @@ class DBImporter:
     def _locate_position(self, files, last_id):
         if not last_id:
             return [(f, -1, -1) for f in files]
-        # reverse files to find out position fastly.
+        # reverse files to find out position fast.
         files = sorted(files, reverse=True)
         result = []
         for file in files:
