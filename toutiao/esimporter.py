@@ -42,17 +42,5 @@ class ESImporter(DBImporter):
 
 
 if __name__ == '__main__':
-    # # 创建 Elasticsearch 客户端
-    # client = Elasticsearch(["http://localhost:9200"])
-    #
-    # # 定义要写入的数据
-    # data = {
-    #     "field1": "value111",
-    #     "field2": "value222"
-    # }
-    #
-    # # 写入数据到指定索引和文档类型
-    # client.index(index="my_index", body=data, id=1)
-
     # ESImporter().find_last_id_from_db()
     ESImporter().import_to_db()
