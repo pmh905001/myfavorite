@@ -12,23 +12,27 @@ class ESSearcher:
     def query(self, keywords=None):
         if not keywords:
             return None
-        body = {"query": {"multi_match": {"query": f"{keywords}", "fields": ["title", 'abstract','source']}}}
+        body = {
+            "query": {"multi_match": {"query": f"{keywords}", "fields": ["title", 'abstract', 'source']}},
+            "sort": [{"_id": {"order": "desc", 'unmapped_type': 'long'}}],
+            "size": 20
+        }
         result = self.client.search(index=self.index, body=body, ignore_unavailable=True)
         return result
 
     def display(self, response):
         hits = response['hits']['hits']
-        table = PrettyTable(['Title', 'Link'])
+        table = PrettyTable(['Title', 'Link', 'abstract'])
         for record in hits:
             source = record['_source']
-            row = (source['title'], source['url'])
+            row = (source['title'], source.get('url', ''), record['_id'])
             table.add_row(row)
         print(table)
 
-    def search(self):
-        response = self.query('内存管理')
+    def search(self, keywords):
+        response = self.query(keywords)
         self.display(response)
 
 
 if __name__ == '__main__':
-    ESSearcher().search()
+    ESSearcher().search('图片')
