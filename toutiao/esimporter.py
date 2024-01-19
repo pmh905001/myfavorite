@@ -45,9 +45,8 @@ class ESImporter(DBImporter):
             except:
                 logging.exception(f'ignore this error record\n:{json.dumps(record, indent=4, ensure_ascii=False)}')
 
-
     def write_to_db(self, records):
-        records_to_insert=[]
+        records_to_insert = []
         for record in records:
             self.increasement_id += 1
             print(f"------------------------increasement_id:{self.increasement_id}")
@@ -63,7 +62,6 @@ class ESImporter(DBImporter):
         from elasticsearch import helpers
         helpers.bulk(self.client, records_to_insert)
 
-
     def import_to_db(self):
         last_id = self.find_last_id_from_db()
         files = self._files()
@@ -74,7 +72,7 @@ class ESImporter(DBImporter):
                 lines = f.readlines()[::-1]
                 if line_number != -1:
                     lines = lines[-line_number:]
-                total_records=[]
+                total_records = []
                 for line in lines:
                     page: dict = json.loads(line)
                     records = page['data']
@@ -84,8 +82,6 @@ class ESImporter(DBImporter):
                             records = records[-record_number:]
                     total_records.extend(records)
                 self.write_to_db(total_records)
-
-
 
 
 if __name__ == '__main__':
