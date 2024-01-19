@@ -38,7 +38,7 @@ class ESImporter(DBImporter):
                 if 'content' in record:
                     logging.warning(f'record\n:{json.dumps(record, indent=4, ensure_ascii=False)}')
             except:
-                logging.exception(f'ignore this error record\n:{json.dumps(record,indent=4,ensure_ascii=False)}')
+                logging.exception(f'ignore this error record\n:{json.dumps(record, indent=4, ensure_ascii=False)}')
 
 
 if __name__ == '__main__':
