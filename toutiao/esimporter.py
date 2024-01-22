@@ -8,10 +8,11 @@ from elasticsearch import Elasticsearch
 
 
 class ESImporter(DBImporter):
+    # def __init__(self, url='http://192.168.3.185:9200', index="mytoutiaofav"):
     def __init__(self, url='http://localhost:9200', index="mytoutiaofav"):
         self.url = url
         self.index = index
-        self.client = Elasticsearch([self.url])
+        self.client = Elasticsearch([self.url],timeout=60, max_retries=100, retry_on_timeout=True)
 
         hits = self.get_last_record(self.client, index)['hits']['hits']
         self.increasement_id = hits[0]['_source']['increasement_id'] if hits else 0

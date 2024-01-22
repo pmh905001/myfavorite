@@ -14,7 +14,8 @@ class ESSearcher:
             return None
         body = {
             "query": {"multi_match": {"query": f"{keywords}", "fields": ["title", 'abstract', 'source']}},
-            "sort": [{"_id": {"order": "desc", 'unmapped_type': 'long'}}],
+            # should be most matched, not order by increasement_id
+            "sort": [{"increasement_id": {"order": "desc", 'unmapped_type': 'long'}}],
             "size": 20
         }
         result = self.client.search(index=self.index, body=body, ignore_unavailable=True)
@@ -25,7 +26,7 @@ class ESSearcher:
         table = PrettyTable(['Title', 'Link', 'abstract'])
         for record in hits:
             source = record['_source']
-            row = (source['title'], source.get('url', ''), record['_id'])
+            row = (source['title'], source.get('url', ''), source['increasement_id'])
             table.add_row(row)
         print(table)
 
