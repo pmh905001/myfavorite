@@ -2,16 +2,15 @@ import json
 import logging
 
 from elastic_transport import ObjectApiResponse
-
-from toutiao.dbimporter import DBImporter
 from elasticsearch import Elasticsearch
 
+from toutiao.dbimporter import DBImporter
+from toutiao.es import ES
 
-class ESImporter(DBImporter):
+
+class ESImporter(ES, DBImporter):
     def __init__(self, url='http://localhost:9200', index="mytoutiaofav"):
-        self.url = url
-        self.index = index
-        self.client = Elasticsearch([self.url], request_timeout=60, max_retries=10, retry_on_timeout=True)
+        super().__init__(url, index)
 
         hits = self.get_last_record(self.client, index)['hits']['hits']
         self.increasement_id = hits[0]['_source']['increasement_id'] if hits else 0

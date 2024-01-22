@@ -1,13 +1,12 @@
-from elasticsearch import Elasticsearch
 from prettytable import PrettyTable
 
+from toutiao.es import ES
 
-class ESSearcher:
+
+class ESSearcher(ES):
 
     def __init__(self, url='http://localhost:9200', index="mytoutiaofav"):
-        self.url = url
-        self.index = index
-        self.client = Elasticsearch([self.url])
+        super().__init__(url, index)
 
     def query(self, keywords=None):
         if not keywords:
@@ -38,4 +37,5 @@ class ESSearcher:
 
 
 if __name__ == '__main__':
-    ESSearcher().search('python 内存管理')
+    # ESSearcher().search('python 内存管理')
+    ESSearcher(url='http://192.168.3.185:9200').search('python 内存管理')
