@@ -13,9 +13,11 @@ class ESSearcher:
         if not keywords:
             return None
         body = {
-            "query": {"multi_match": {"query": f"{keywords}", "fields": ["title", 'abstract', 'source']}},
-            # should be most matched, not order by increasement_id
-            "sort": [{"increasement_id": {"order": "desc", 'unmapped_type': 'long'}}],
+            # source means author.
+            "query": {"multi_match": {"query": f"{keywords}", "fields": ["title", 'abstract', 'source', 'content']}},
+            # "query": {"multi_match": {"query": f"{keywords}", "fields": ["title"]}},
+            # should be most matched, not only order by increasement_id
+            "sort": [{"_score": {"order": "desc"}}, {"increasement_id": {"order": "desc", 'unmapped_type': 'long'}}],
             "size": 20
         }
         result = self.client.search(index=self.index, body=body, ignore_unavailable=True)
@@ -23,10 +25,10 @@ class ESSearcher:
 
     def display(self, response):
         hits = response['hits']['hits']
-        table = PrettyTable(['Title', 'Link', 'abstract'])
+        table = PrettyTable(['Title', 'Link', 'increasement_id', '_score'])
         for record in hits:
             source = record['_source']
-            row = (source['title'], source.get('url', ''), source['increasement_id'])
+            row = (source['title'], source.get('url', ''), source['increasement_id'], record['_score'])
             table.add_row(row)
         print(table)
 
@@ -36,4 +38,4 @@ class ESSearcher:
 
 
 if __name__ == '__main__':
-    ESSearcher().search('图片')
+    ESSearcher().search('python 内存管理')

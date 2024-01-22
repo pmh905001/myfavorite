@@ -8,11 +8,10 @@ from elasticsearch import Elasticsearch
 
 
 class ESImporter(DBImporter):
-    # def __init__(self, url='http://192.168.3.185:9200', index="mytoutiaofav"):
     def __init__(self, url='http://localhost:9200', index="mytoutiaofav"):
         self.url = url
         self.index = index
-        self.client = Elasticsearch([self.url],timeout=60, max_retries=100, retry_on_timeout=True)
+        self.client = Elasticsearch([self.url], request_timeout=60, max_retries=10, retry_on_timeout=True)
 
         hits = self.get_last_record(self.client, index)['hits']['hits']
         self.increasement_id = hits[0]['_source']['increasement_id'] if hits else 0
@@ -34,7 +33,7 @@ class ESImporter(DBImporter):
     def find_last_id_from_db(self):
         return self.id
 
-    def write_to_db_slow(self, records):
+    def write_to_db_one_by_one(self, records):
         for record in records:
             self.increasement_id += 1
             print(f"------------------------increasement_id:{self.increasement_id}")
@@ -86,5 +85,5 @@ class ESImporter(DBImporter):
 
 
 if __name__ == '__main__':
-    # ESImporter().find_last_id_from_db()
-    ESImporter().import_to_db()
+    # ESImporter().import_to_db()
+    ESImporter(url='http://192.168.3.185:9200').import_to_db()
