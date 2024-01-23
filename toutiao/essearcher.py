@@ -1,5 +1,6 @@
 import logging
 
+from elastic_transport import ObjectApiResponse
 from prettytable import PrettyTable
 
 from toutiao.es import ES
@@ -11,19 +12,19 @@ class ESSearcher(ES):
     def __init__(self, url='http://localhost:9200', index="mytoutiaofav"):
         super().__init__(url, index)
 
-    def query(self, keywords=None, page=1, size=10):
+    def query(self, keywords=None, page=1, size=SIZE) -> ObjectApiResponse:
         body = {
             "sort": [{"_score": {"order": "desc"}}, {"increasement_id": {"order": "desc", 'unmapped_type': 'long'}}],
             "from": (page - 1) * size,
             "size": size
         }
         if keywords:
-            # source means author.
             body.update(
                 {
                     "query": {
                         "multi_match": {
                             "query": f"{keywords}",
+                            # source means author.
                             "fields": ["title", 'abstract', 'source', 'content']
                         }
                     }
