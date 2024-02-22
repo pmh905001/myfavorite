@@ -1,0 +1,48 @@
+== Info: Uses proxy env variable no_proxy == '192.168.99.100'
+== Info:   Trying 127.0.0.1:5000...
+== Info: Connected to localhost (127.0.0.1) port 5000 (#0)
+=> Send header, 83 bytes (0x53)
+0000: 47 45 54 20 2f 73 65 61 72 63 68 20 48 54 54 50 GET /search HTTP
+0010: 2f 31 2e 31 0d 0a 48 6f 73 74 3a 20 6c 6f 63 61 /1.1..Host: loca
+0020: 6c 68 6f 73 74 3a 35 30 30 30 0d 0a 55 73 65 72 lhost:5000..User
+0030: 2d 41 67 65 6e 74 3a 20 63 75 72 6c 2f 38 2e 31 -Agent: curl/8.1
+0040: 2e 32 0d 0a 41 63 63 65 70 74 3a 20 2a 2f 2a 0d .2..Accept: */*.
+0050: 0a 0d 0a                                        ...
+<= Recv header, 17 bytes (0x11)
+0000: 48 54 54 50 2f 31 2e 31 20 32 30 30 20 4f 4b 0d HTTP/1.1 200 OK.
+0010: 0a                                              .
+<= Recv header, 39 bytes (0x27)
+0000: 53 65 72 76 65 72 3a 20 57 65 72 6b 7a 65 75 67 Server: Werkzeug
+0010: 2f 33 2e 30 2e 31 20 50 79 74 68 6f 6e 2f 33 2e /3.0.1 Python/3.
+0020: 31 30 2e 31 31 0d 0a                            10.11..
+<= Recv header, 37 bytes (0x25)
+0000: 44 61 74 65 3a 20 53 75 6e 2c 20 31 38 20 46 65 Date: Sun, 18 Fe
+0010: 62 20 32 30 32 34 20 31 30 3a 30 39 3a 32 31 20 b 2024 10:09:21 
+0020: 47 4d 54 0d 0a                                  GMT..
+<= Recv header, 32 bytes (0x20)
+0000: 43 6f 6e 74 65 6e 74 2d 54 79 70 65 3a 20 61 70 Content-Type: ap
+0010: 70 6c 69 63 61 74 69 6f 6e 2f 6a 73 6f 6e 0d 0a plication/json..
+<= Recv header, 21 bytes (0x15)
+0000: 43 6f 6e 74 65 6e 74 2d 4c 65 6e 67 74 68 3a 20 Content-Length: 
+0010: 31 36 35 0d 0a                                  165..
+<= Recv header, 32 bytes (0x20)
+0000: 41 63 63 65 73 73 2d 43 6f 6e 74 72 6f 6c 2d 41 Access-Control-A
+0010: 6c 6c 6f 77 2d 4f 72 69 67 69 6e 3a 20 2a 0d 0a llow-Origin: *..
+<= Recv header, 19 bytes (0x13)
+0000: 43 6f 6e 6e 65 63 74 69 6f 6e 3a 20 63 6c 6f 73 Connection: clos
+0010: 65 0d 0a                                        e..
+<= Recv header, 2 bytes (0x2)
+0000: 0d 0a                                           ..
+<= Recv data, 165 bytes (0xa5)
+0000: 5b 0a 20 20 7b 0a 20 20 20 20 22 69 64 22 3a 20 [.  {.    "id": 
+0010: 31 2c 0a 20 20 20 20 22 74 69 74 6c 65 22 3a 20 1,.    "title": 
+0020: 22 74 69 74 6c 65 20 31 22 2c 0a 20 20 20 20 22 "title 1",.    "
+0030: 75 72 6c 22 3a 20 22 68 74 74 70 73 3a 2f 2f 74 url": "https://t
+0040: 6f 75 74 69 61 6f 2e 63 6f 6d 2f 31 22 0a 20 20 outiao.com/1".  
+0050: 7d 2c 0a 20 20 7b 0a 20 20 20 20 22 69 64 22 3a },.  {.    "id":
+0060: 20 32 2c 0a 20 20 20 20 22 74 69 74 6c 65 22 3a  2,.    "title":
+0070: 20 22 74 69 74 6c 65 20 32 22 2c 0a 20 20 20 20  "title 2",.    
+0080: 22 75 72 6c 22 3a 20 22 68 74 74 70 73 3a 2f 2f "url": "https://
+0090: 74 6f 75 74 69 61 6f 2e 63 6f 6d 2f 32 22 0a 20 toutiao.com/2". 
+00a0: 20 7d 0a 5d 0a                                   }.].
+== Info: Closing connection 0
