@@ -84,5 +84,5 @@ class ESImporter(ES, DBImporter):
 
 
 if __name__ == '__main__':
-    # ESImporter().import_to_db()
-    ESImporter(url='http://192.168.3.185:9200').import_to_db()
+    ESImporter().import_to_db()
+    # ESImporter(url='http://192.168.3.185:9200').import_to_db()
