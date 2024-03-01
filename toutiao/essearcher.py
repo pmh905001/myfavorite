@@ -35,6 +35,7 @@ class ESSearcher(ES):
 
     def display(self, response):
         hits = response['hits']['hits']
+        print(hits)
         logging.getLogger().setLevel(logging.INFO)
         table = PrettyTable(['Title', 'Link', 'increasement_id', '_score'])
         for record in hits:
@@ -52,4 +53,4 @@ if __name__ == '__main__':
     # ESSearcher().search('python 内存管理')
     # ESSearcher(url='http://192.168.3.185:9200').search('python 内存管理')
     # ESSearcher(url='http://192.168.3.185:9200').search('')
-    ESSearcher().search('', 3, 100)
+    ESSearcher().search('', 1, 100)
