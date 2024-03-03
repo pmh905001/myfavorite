@@ -1,10 +1,10 @@
 import json
 
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, render_template
 
 from toutiao.essearcher import ESSearcher
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../views')
 
 
 @app.route('/search', methods=['GET'])
@@ -34,5 +34,13 @@ def search():
     return resp
 
 
+@app.route('/myfavs', methods=['GET'])
+def myfavs():
+    return render_template('myfavs.html')
+    # return "Hello"
+
+
 if __name__ == '__main__':
+    app.jinja_env.variable_start_string = '[['
+    app.jinja_env.variable_end_string = ']]'
     app.run(debug=True)
