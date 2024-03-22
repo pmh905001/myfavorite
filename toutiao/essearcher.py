@@ -24,9 +24,12 @@ class ESSearcher(ES):
                     "query": {
                         "multi_match": {
                             "query": f"{keywords}",
-                            # source means author.
-                            "fields": ["title", 'abstract', 'source', 'content']
-                        }
+                            # source means author. weight of title is high
+                            "fields": ["title^10", 'abstract', 'source', 'content']
+                            # set high weight for full match
+                            , "tie_breaker": 0.3
+                        },
+
                     }
                 }
             )
