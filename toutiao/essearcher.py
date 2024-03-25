@@ -1,3 +1,4 @@
+import json
 import logging
 
 from elastic_transport import ObjectApiResponse
@@ -38,7 +39,18 @@ class ESSearcher(ES):
 
     def display(self, response):
         hits = response['hits']['hits']
-        print(hits)
+        # print(json.dumps(hits[28], indent=4, ensure_ascii=False))
+        # print(hits[28]["content"])
+        # print(json.dumps(json.loads(hits[28]["_source"]["content"]) , indent=4, ensure_ascii=False))
+        # http://toutiao.com/group/6629579861537063182/?iid=0&app=news_article
+        # answer.share_data.share_url
+        # share_info.share_url
+        # print(json.loads(hits[28]["_source"]["content"])['answer']['share_data']['share_url'])
+        # print(json.loads(hits[28]["_source"]["content"])['share_info']['share_url'])
+        # "title": "微服务架构如何实现客户端负载均衡？(科技行者的回答)",
+        # print(json.loads(hits[28]["_source"]["content"])['share_info']['title'])
+
+        # print(len(hits))
         logging.getLogger().setLevel(logging.INFO)
         table = PrettyTable(['Title', 'Link', 'increasement_id', '_score'])
         for record in hits:
@@ -56,4 +68,5 @@ if __name__ == '__main__':
     # ESSearcher().search('python 内存管理')
     # ESSearcher(url='http://192.168.3.185:9200').search('python 内存管理')
     # ESSearcher(url='http://192.168.3.185:9200').search('')
-    ESSearcher().search('', 1, 100)
+    # ESSearcher().search('', 1, 100)
+    ESSearcher().search('requests', 1, 100)
