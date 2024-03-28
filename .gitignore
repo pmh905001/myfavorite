@@ -3,6 +3,7 @@ __pycache__/
 toutiao/curl_cmd2.txt
 myfav.db
 toutiao/toutiao-myfavorites.txt
-toutiao/myfavorites-*.txt
+toutiao/*myfavorites-*.txt
 toutiao/shortmessages.py
 test/toutiao/cookie.txt
+toutiao/cookie.txt
