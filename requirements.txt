@@ -3,3 +3,4 @@ pymongo==4.6.1
 prettytable==3.9
 aiohttp==3.9.3
 selenium==3.141.0
+tenacity==8.2.3

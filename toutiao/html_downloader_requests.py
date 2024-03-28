@@ -44,7 +44,7 @@ def read_id_urls(file_name, line_number, record_number):
             page: dict = json.loads(line)
             records = page['data']
             if records:
-                id_urls_in_page = [(record['id'], url(record)) for record in records[record_number:]]
+                id_urls_in_page = [(record['id'], url(record)) for record in records[record_number:] if url(record)]
                 result.extend(id_urls_in_page)
     return result
 
@@ -56,11 +56,15 @@ def url_from_content(record):
 
 
 def url(record: dict):
-    return (record.get('url')
-            or record.get('share_url')
-            or record.get('share_info', {}).get('share_url')
-            or url_from_content(record)
-            )
+    result = (record.get('url')
+              or record.get('share_url')
+              or record.get('share_info', {}).get('share_url')
+              or url_from_content(record)
+              or record.get('schema')
+              )
+    # if not result:
+    #     logging.warning(f"generated URL is null, please check! {record} ")
+    return result
 
 
 def download_htmls():
