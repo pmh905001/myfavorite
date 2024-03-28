@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import random
 import time
 
@@ -14,17 +15,17 @@ def read_cookie():
 
 def send_request(id, url, html_file_name):
     response: requests.Response = requests.get(url, headers=read_cookie(), allow_redirects=False)
-    # while response.is_redirect:
-    #     location = response.headers['Location']
-    #     print(f'redirect to {location}')
-    #     response = requests.get(location, headers=read_cookie(), allow_redirects=False)
+    while response.is_redirect:
+        location = response.headers['Location']
+        print(f'redirect to {location}')
+        response = requests.get(location, headers=read_cookie(), allow_redirects=False)
 
-    with requests.session() as session:
-        response = session.get(url, headers=read_cookie(), allow_redirects=False)
-        while response.is_redirect:
-            location = response.headers['Location']
-            print(f'redirect to {location}')
-            response = session.get(location, headers=read_cookie(), allow_redirects=False)
+    # with requests.session() as session:
+    #     response = session.get(url, headers=read_cookie(), allow_redirects=False)
+    #     while response.is_redirect:
+    #         location = response.headers['Location']
+    #         print(f'redirect to {location}')
+    #         response = session.get(location, headers=read_cookie(), allow_redirects=False)
 
     with open(html_file_name, 'a', encoding='utf-8') as file:
         record = json.dumps({id: response.text}, ensure_ascii=False)
@@ -35,16 +36,15 @@ def send_request(id, url, html_file_name):
     time.sleep(sleep_seconds)
 
 
-# 主函数
-def read_id_urls(file_name):
+def read_id_urls(file_name, line_number, record_number):
     result = []
     with open(file_name, 'r', encoding='utf-8') as index_file:
-        lines = index_file.readlines()
+        lines = index_file.readlines()[line_number:]
         for line in lines:
             page: dict = json.loads(line)
             records = page['data']
             if records:
-                id_urls_in_page = [(record['id'], url(record)) for record in records]
+                id_urls_in_page = [(record['id'], url(record)) for record in records[record_number:]]
                 result.extend(id_urls_in_page)
     return result
 
@@ -63,10 +63,61 @@ def url(record: dict):
             )
 
 
-def main():
-    # id_urls = read_id_urls('myfavorites-20231118-164500.txt')
-    file_name = 'myfavorites-20240324-180714.txt'
-    id_urls = read_id_urls(file_name)
+def download_htmls():
+    next_positions = find_to_download_html_files()
+    for next_pos in next_positions:
+        logging.info(f'start to download html files for {next_pos}')
+        download_html_from_one_file(*next_pos)
+
+
+def find_last_id_from_html_file(html_file_name):
+    if html_file_name:
+        with open(html_file_name, 'r', encoding='utf-8') as html_file:
+            lines = html_file.readlines()
+            if lines:
+                last_line = lines[len(lines) - 1]
+                return list(json.loads(last_line).keys())[0]
+    return None
+
+
+def find_to_download_html_files():
+    all_html_files = {f'htmlcontent-{f}' for f in os.listdir('.') if f.startswith('myfavorites-')}
+    html_files = {f for f in os.listdir('.') if f.startswith('htmlcontent-myfavorites-')}
+    to_download_files = all_html_files - html_files
+
+    last_html_file = sorted(html_files)[0] if html_files else None
+    next_pos = _next_position(last_html_file)
+
+    result = sorted([(file_name.replace('htmlcontent-', ''), 0, 0) for file_name in to_download_files])
+    if next_pos:
+        result.insert(0, next_pos)
+    return result
+
+
+def _next_position(last_html_file):
+    last_id = find_last_id_from_html_file(last_html_file)
+    if not last_id:
+        return None
+    index_file_name = last_html_file.replace('htmlcontent-', '')
+    with open(index_file_name, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+        for line_number, line in enumerate(lines):
+            page = json.loads(line)
+            if page['data']:
+                for record_number, record in enumerate(page['data']):
+                    if record['id'] == last_id:
+                        if line_number == len(lines) - 1 and record_number == len(page['data']):
+                            return None
+                        elif record_number == len(page['data']):
+                            return (index_file_name, line_number + 1, 0)
+                        else:
+                            return (index_file_name, line_number, record_number + 1)
+    raise FileNotFoundError(f'not found by id: {last_id} from {index_file_name}')
+
+
+def download_html_from_one_file(file_name, line_number, record_number):
+    # file_name = 'myfavorites-20240324-180714.txt'
+    id_urls = read_id_urls(file_name, line_number, record_number)
     html_file_name = f'htmlcontent-{file_name}'
     for id, url in id_urls:
         print(f'id={id}, url={url}')
@@ -79,4 +130,4 @@ if __name__ == '__main__':
         format='%(asctime)s.%(msecs)03d %(levelname)s %(filename)-8s: %(lineno)s line -%(message)s',
         datefmt="%Y-%m-%d %H:%M:%S"
     )
-    main()
+    download_htmls()

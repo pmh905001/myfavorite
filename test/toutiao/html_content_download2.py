@@ -5,17 +5,15 @@ import time
 
 import requests
 
+
 def read_cookie():
     with open('cookie.txt', 'r') as f:
         cookie = f.read().split(':')
-    return {cookie[0]:cookie[1]}
+    return {cookie[0]: cookie[1]}
 
 
-def send_msgs():
+def send_msgs1():
     url = 'https://toutiao.com/group/7320235801974145572/'
-
-
-
     headers = {
         # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
         # 'Accept-Encoding': 'gzip, deflate, br, zstd',
@@ -123,8 +121,18 @@ def send_msgs4():
     print(response.text)
 
 
+def send_msgs0():
+    url = 'https://toutiao.com/group/7320235801974145572/'
+    response = requests.get(url, headers=read_cookie(), allow_redirects=True)
+    # print(response.text)
+    print(response.is_redirect)
+    print(response.status_code)
+    print(response.headers)
+    print(response.text)
+
 if __name__ == '__main__':
-    # send_msgs()
+    send_msgs0()
+    # send_msgs1()
     # send_msgs2()
     # send_msgs3()
-    send_msgs4()
+    # send_msgs4()
