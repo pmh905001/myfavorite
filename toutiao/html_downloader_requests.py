@@ -108,9 +108,9 @@ def _next_position(last_html_file):
             if page['data']:
                 for record_number, record in enumerate(page['data']):
                     if record['id'] == last_id:
-                        if line_number == len(lines) - 1 and record_number == len(page['data']):
+                        if line_number == (len(lines) - 1) and record_number == (len(page['data']) - 1):
                             return None
-                        elif record_number == len(page['data']):
+                        elif record_number == (len(page['data']) - 1):
                             return (index_file_name, line_number + 1, 0)
                         else:
                             return (index_file_name, line_number, record_number + 1)
