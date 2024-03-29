@@ -20,18 +20,11 @@ def send_request(id, url, html_file_name):
         print(f'redirect to {location}')
         response = requests.get(location, headers=read_cookie(), allow_redirects=False)
 
-    # with requests.session() as session:
-    #     response = session.get(url, headers=read_cookie(), allow_redirects=False)
-    #     while response.is_redirect:
-    #         location = response.headers['Location']
-    #         print(f'redirect to {location}')
-    #         response = session.get(location, headers=read_cookie(), allow_redirects=False)
-
     with open(html_file_name, 'a', encoding='utf-8') as file:
         record = json.dumps({id: response.text}, ensure_ascii=False)
         file.write(record)
         file.write('\n')
-    sleep_seconds = random.randint(1, 10)
+    sleep_seconds = random.randint(1, 2)
     print(f'start to sleep {sleep_seconds} seconds')
     time.sleep(sleep_seconds)
 
@@ -46,6 +39,7 @@ def read_id_urls(file_name, line_number, record_number):
             if records:
                 id_urls_in_page = [(record['id'], url(record)) for record in records[record_number:] if url(record)]
                 result.extend(id_urls_in_page)
+            record_number = 0
     return result
 
 
@@ -125,7 +119,10 @@ def download_html_from_one_file(file_name, line_number, record_number):
     html_file_name = f'htmlcontent-{file_name}'
     for id, url in id_urls:
         print(f'id={id}, url={url}')
-        send_request(id, url, html_file_name)
+        try:
+            send_request(id, url, html_file_name)
+        except:
+            logging.exception(f'ignore the exception for id: {id} url: {url}')
 
 
 if __name__ == '__main__':
