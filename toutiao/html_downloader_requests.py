@@ -15,10 +15,14 @@ def read_cookie():
 
 def send_request(id, url, html_file_name):
     response: requests.Response = requests.get(url, headers=read_cookie(), allow_redirects=False)
-    while response.is_redirect:
+    count = 0
+    while response.is_redirect and count < 10:
         location = response.headers['Location']
         print(f'redirect to {location}')
         response = requests.get(location, headers=read_cookie(), allow_redirects=False)
+        count += 1
+    if response.is_redirect:
+        return
 
     with open(html_file_name, 'a', encoding='utf-8') as file:
         record = json.dumps({id: response.text}, ensure_ascii=False)
