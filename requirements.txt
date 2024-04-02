@@ -4,3 +4,6 @@ prettytable==3.9
 aiohttp==3.9.3
 selenium==3.141.0
 tenacity==8.2.3
+
+pandas==2.2.1
+fastparquet==2024.2.0
