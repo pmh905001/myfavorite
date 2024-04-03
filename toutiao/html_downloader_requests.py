@@ -87,7 +87,7 @@ def find_to_download_html_files():
     html_files = {f for f in os.listdir('.') if f.startswith('htmlcontent-myfavorites-')}
     to_download_files = all_html_files - html_files
 
-    last_html_file = sorted(html_files)[0] if html_files else None
+    last_html_file = sorted(html_files, reverse=True)[0] if html_files else None
     next_pos = _next_position(last_html_file)
 
     result = sorted([(file_name.replace('htmlcontent-', ''), 0, 0) for file_name in to_download_files])
