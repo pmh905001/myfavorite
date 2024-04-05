@@ -4,8 +4,8 @@ import logging
 from elastic_transport import ObjectApiResponse
 from elasticsearch import Elasticsearch
 
-from toutiao.dbimporter import DBImporter
-from toutiao.es import ES
+from dbimporter import DBImporter
+from es import ES
 
 
 class ESImporter(ES, DBImporter):

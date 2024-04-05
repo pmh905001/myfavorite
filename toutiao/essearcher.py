@@ -4,7 +4,7 @@ import logging
 from elastic_transport import ObjectApiResponse
 from prettytable import PrettyTable
 
-from toutiao.es import ES
+from es import ES
 
 
 class ESSearcher(ES):

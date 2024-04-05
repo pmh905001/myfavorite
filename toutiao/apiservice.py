@@ -2,7 +2,7 @@ import json
 
 from flask import Flask, request, make_response, render_template
 
-from toutiao.essearcher import ESSearcher
+from essearcher import ESSearcher
 
 app = Flask(__name__, template_folder='../views')
 

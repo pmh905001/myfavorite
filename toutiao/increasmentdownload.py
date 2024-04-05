@@ -7,7 +7,7 @@ import time
 
 import requests
 
-from toutiao.fulldownload import read_curl, replace_url_param
+from fulldownload import read_curl, replace_url_param
 
 
 def latest_ids_from_file():
