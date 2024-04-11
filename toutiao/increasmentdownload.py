@@ -12,9 +12,9 @@ from fulldownload import read_curl, replace_url_param
 
 def latest_ids_from_file():
     ids = []
-    my_favorite_files = sorted([f for f in os.listdir('.') if f.startswith('myfavorites-')], reverse=True)
+    my_favorite_files = sorted([f for f in os.listdir('files') if f.startswith('myfavorites-')], reverse=True)
     for file_name in my_favorite_files:
-        with open(file_name, 'r', encoding='utf-8') as f:
+        with open(f'files/{file_name}', 'r', encoding='utf-8') as f:
             page: dict = json.loads(f.readline())
             if page.get('data'):
                 for record in page['data']:
@@ -34,7 +34,7 @@ def increasement_download():
     while page['has_more']:
         try_num += 1
         max_behot_time = page['next']['max_behot_time']
-        write_page(page, file_name)
+        write_page(page, f'files/{file_name}')
         sleep_time = random.randint(1, 10)
         print(f'-------------------------------------------page number: {try_num}, sleep {sleep_time} seconds')
         time.sleep(sleep_time)

@@ -24,7 +24,7 @@ def send_request(id, url, html_file_name):
     if response.is_redirect:
         return
 
-    with open(html_file_name, 'a', encoding='utf-8') as file:
+    with open(f'files/{html_file_name}', 'a', encoding='utf-8') as file:
         record = json.dumps({id: response.text}, ensure_ascii=False)
         file.write(record)
         file.write('\n')
@@ -35,7 +35,7 @@ def send_request(id, url, html_file_name):
 
 def read_id_urls(file_name, line_number, record_number):
     result = []
-    with open(file_name, 'r', encoding='utf-8') as index_file:
+    with open(f'files/{file_name}', 'r', encoding='utf-8') as index_file:
         lines = index_file.readlines()[line_number:]
         for line in lines:
             page: dict = json.loads(line)
@@ -74,7 +74,7 @@ def download_htmls():
 
 def find_last_id_from_html_file(html_file_name):
     if html_file_name:
-        with open(html_file_name, 'r', encoding='utf-8') as html_file:
+        with open(f'files/{html_file_name}', 'r', encoding='utf-8') as html_file:
             lines = html_file.readlines()
             if lines:
                 last_line = lines[len(lines) - 1]
@@ -83,8 +83,8 @@ def find_last_id_from_html_file(html_file_name):
 
 
 def find_to_download_html_files():
-    all_html_files = {f'htmlcontent-{f}' for f in os.listdir('.') if f.startswith('myfavorites-')}
-    html_files = {f for f in os.listdir('.') if f.startswith('htmlcontent-myfavorites-')}
+    all_html_files = {f'htmlcontent-{f}' for f in os.listdir('files') if f.startswith('myfavorites-')}
+    html_files = {f for f in os.listdir('files') if f.startswith('htmlcontent-myfavorites-')}
     to_download_files = all_html_files - html_files
 
     last_html_file = sorted(html_files, reverse=True)[0] if html_files else None
@@ -101,7 +101,7 @@ def _next_position(last_html_file):
     if not last_id:
         return None
     index_file_name = last_html_file.replace('htmlcontent-', '')
-    with open(index_file_name, 'r', encoding='utf-8') as f:
+    with open(f'files/{index_file_name}', 'r', encoding='utf-8') as f:
         lines = f.readlines()
         for line_number, line in enumerate(lines):
             page = json.loads(line)
