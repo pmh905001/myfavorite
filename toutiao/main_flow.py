@@ -74,8 +74,6 @@ if __name__ == '__main__':
     start_es()   
     start_api_server()
     atexit.register(stop_services)
-    # exit()
-    
     start_backend_to_fetch_data()
     
     
