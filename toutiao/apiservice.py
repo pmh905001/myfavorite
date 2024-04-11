@@ -26,7 +26,11 @@ def myfavs():
     # return "Hello"
 
 
-if __name__ == '__main__':
+def run_app():
     app.jinja_env.variable_start_string = '[['
     app.jinja_env.variable_end_string = ']]'
     app.run(debug=True)
+
+
+if __name__ == '__main__':
+    run_app()
