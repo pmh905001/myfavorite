@@ -40,7 +40,7 @@ def increasement_download():
         time.sleep(sleep_time)
         page = get_page(url, headers, max_behot_time, latest_ids_downloaded)
     else:
-        write_page(page, file_name)
+        write_page(page, f'files/{file_name}')
 
 
 def write_page(page, file_name):

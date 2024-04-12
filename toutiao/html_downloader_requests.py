@@ -25,7 +25,9 @@ def send_request(id, url, html_file_name):
         return
 
     with open(f'files/{html_file_name}', 'a', encoding='utf-8') as file:
-        record = json.dumps({id: response.text}, ensure_ascii=False)
+        resp_text=response.text
+        print(resp_text)
+        record = json.dumps({id: resp_text}, ensure_ascii=False)
         file.write(record)
         file.write('\n')
     sleep_seconds = random.randint(1, 2)
