@@ -67,7 +67,7 @@ class ESImporter(ES, DBImporter):
         my_favorite_files = self._locate_position(files, last_id)
         for file_name, line_number, record_number in my_favorite_files:
             print(f'------------------------{file_name}')
-            with open(file_name, 'r', encoding='utf-8') as f:
+            with open(f'files/{file_name}', 'r', encoding='utf-8') as f:
                 lines = f.readlines()[::-1]
                 if line_number != -1:
                     lines = lines[-line_number:]
