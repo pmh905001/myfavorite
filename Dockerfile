@@ -1,8 +1,8 @@
 FROM python:3.10-slim
 
 # RUN pip install requests elasticsearch
+ADD toutiao/curl_cmd2.txt /app/myfavorite/toutiao/curl_cmd2.txt
 COPY toutiao/* /app/myfavorite/toutiao/
-ADD toutiao/curl_cmd2.txt /app/myfavorite/toutiao/
 COPY main.py /app/myfavorite/main.py
 # make text output can be show immediately by print()
 ENV PYTHONUNBUFFERED=1
