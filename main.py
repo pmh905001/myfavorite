@@ -1,5 +1,3 @@
-
-
 # import time
 # while True:
 #     print('hello world')
@@ -7,7 +5,6 @@
 
 import os
 from toutiao import main_flow
-
 
 if __name__ == '__main__':
     os.chdir('toutiao')
