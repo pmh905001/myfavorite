@@ -4,6 +4,7 @@ FROM python:3.10-slim
 # ADD toutiao/curl_cmd2.txt /app/myfavorite/toutiao/curl_cmd2.txt
 COPY toutiao/* /app/myfavorite/toutiao/
 COPY main.py /app/myfavorite/main.py
+RUN mkdir /app/myfavorite/files
 # make text output can be show immediately by print()
 ENV PYTHONUNBUFFERED=1
 WORKDIR /app/myfavorite/toutiao
