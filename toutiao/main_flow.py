@@ -21,11 +21,13 @@ def start_backend_to_fetch_data():
         )
     
     while True:
-        increasmentdownload.increasement_download()
-        html_downloader_requests.download_htmls()
-        esimporter.ESImporter().import_to_db()
+        try:
+            increasmentdownload.increasement_download()
+            html_downloader_requests.download_htmls()
+            esimporter.ESImporter().import_to_db()
+        except Exception as e:
+            logging.error(f"Error in main_flow.py: {e}")
         time.sleep(10*60) # sleep for 10 minutes
-
 def start_api_server():
     # threading.Thread(target=apiservice.run_app).start()
     
