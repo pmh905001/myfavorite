@@ -1,7 +1,9 @@
 FROM python:3.10-slim
 
 # RUN pip install requests elasticsearch
-COPY main.py /app/main.py
+COPY toutiao /app/
 # make text output can be show immediately by print()
 ENV PYTHONUNBUFFERED=1
-CMD ["python", "/app/main.py"]
+WORKDIR /app/toutiao
+RUN pip install -r toutiao/requirements.txt
+CMD ["python", "/app/toutiao/main_flow.py"]

@@ -69,13 +69,12 @@ def stop_services():
                 process.kill()
             except:
                 print('stop service failed')
-    
 
 if __name__ == '__main__':
-    start_web()
-    start_es()   
-    start_api_server()
-    atexit.register(stop_services)
+    # start_web()
+    # start_es()   
+    # start_api_server()
+    # atexit.register(stop_services)
     start_backend_to_fetch_data()
     
     
