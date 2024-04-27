@@ -32,15 +32,15 @@ def parse_html():
         html_doc=f.read()
         soup = BeautifulSoup(html_doc, 'html.parser')
         content=soup.select('.article-content')
-        # print(content[0].get_text())
-        print()
-        with open('myfav002_part.html','w',encoding='utf-8') as txt_f:
-            txt_f.write(str(content[0]))
+        print(content[0].get_text())
+        # print(content)
+        # with open('myfav002_part.html','w',encoding='utf-8') as txt_f:
+        #     txt_f.write(str(content[0]))
 
 
 
 
 
 if __name__ == '__main__':
-    send_msgs()
-    # parse_html()
+    # send_msgs()
+    parse_html()

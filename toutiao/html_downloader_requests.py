@@ -5,12 +5,18 @@ import random
 import time
 
 import requests
+from bs4 import BeautifulSoup
+
+from fulldownload import read_curl
 
 
 def read_cookie():
     with open('cookie.txt', 'r') as f:
         cookie = f.read().split(':')
     return {cookie[0]: cookie[1]}
+
+    # _, headers = read_curl()
+    # return {'cookie': headers.get('cookie')}
 
 
 def send_request(id, url, html_file_name):
@@ -22,11 +28,21 @@ def send_request(id, url, html_file_name):
         response = requests.get(location, headers=read_cookie(), allow_redirects=False)
         count += 1
     if response.is_redirect:
+        logging.warning(f'dead redirect more than 10 times: {location}')
         return
 
     with open(f'files/{html_file_name}', 'a', encoding='utf-8') as file:
-        resp_text=response.text
-        print(resp_text)
+        resp_text = response.text
+
+        try:
+            soup = BeautifulSoup(resp_text, 'html.parser')
+            article_content = soup.select_one('.article-content')
+            wtt_content = soup.select_one('.wtt-content')
+            main_content = soup.select_one('.main-content')
+            print((article_content or wtt_content or main_content).get_text())
+        except:
+            logging.warning(f"can't find content for url: {location}")
+
         record = json.dumps({id: resp_text}, ensure_ascii=False)
         file.write(record)
         file.write('\n')
@@ -138,3 +154,5 @@ if __name__ == '__main__':
         datefmt="%Y-%m-%d %H:%M:%S"
     )
     download_htmls()
+
+    # print(read_cookie())
