@@ -7,6 +7,7 @@ import apiservice
 import threading
 import time
 import subprocess
+import webbrowser
 
 WEB_PROCESS = None
 ES_PROCESS = None
@@ -54,6 +55,9 @@ def start_es():
             print(output.strip())
             if b'current.health="YELLOW" message="Cluster health status changed from [RED] to [YELLOW]' in output:
                 break
+            
+def start_browser():            
+    webbrowser.open("http://localhost:5173/" )
 
 
 def start_web():
@@ -75,6 +79,7 @@ def start_services():
     start_web()
     start_es()
     start_api_server()
+    start_browser()
     atexit.register(stop_services)
     start_backend_to_fetch_data()
 
