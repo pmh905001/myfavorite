@@ -8,3 +8,6 @@ beautifulsoup4==4.12.3
 
 pandas==2.2.1
 fastparquet==2024.2.0
+
+html2text==2024.2.26
+markdownify=0.12.1
