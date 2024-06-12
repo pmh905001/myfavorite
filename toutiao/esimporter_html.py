@@ -11,6 +11,8 @@ from dbimporter import DBImporter
 from es import ES
 import logging
 
+from log import Log
+
 
 class ESImporterFromHTMLContent(ES, DBImporter):
     def __init__(self, url='http://localhost:9200', index="mytoutiaofav"):
@@ -132,7 +134,7 @@ class ESImporterFromHTMLContent(ES, DBImporter):
             with open(f'files/{file}', 'r', encoding='utf-8') as f:
                 for line_number, line in enumerate(f):
                     page = json.loads(line)
-                    if page.contains(last_id):
+                    if last_id in page:
                         if not line_number == 0:
                             result.append((file, line_number, -1))
                         return result[::-1]
@@ -163,29 +165,6 @@ class ESImporterFromHTMLContent(ES, DBImporter):
                 # self.write_to_db_for_html_content()
                 # logging.info(f'update html content for {file_name} success!')
 
-
-
-
-
-class Log:
-    FORMAT = '%(asctime)s %(levelname)s %(filename)-8s: %(lineno)s line -%(message)s'
-
-    @classmethod
-    def setup(cls):
-        logging.basicConfig(
-            level=logging.INFO,
-            filename='import-html-to-es.log',
-            format=cls.FORMAT,
-            datefmt="%Y-%m-%d %H:%M:%S"
-        )
-        logger = logging.getLogger()
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(logging.Formatter(cls.FORMAT))
-        logger.addHandler(console_handler)
-
-
-
 if __name__ == '__main__':
     Log.setup()
     ESImporterFromHTMLContent().import_to_db()
-    # ESImporter(url='http://192.168.3.185:9200').import_to_db()

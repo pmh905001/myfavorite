@@ -3,12 +3,14 @@ import logging
 import increasmentdownload
 import html_downloader_requests
 import esimporter
-import esimporter_content
+import esimporter_html
 import apiservice
 import threading
 import time
 import subprocess
 import webbrowser
+
+from log import Log
 
 WEB_PROCESS = None
 ES_PROCESS = None
@@ -27,8 +29,7 @@ def start_backend_to_fetch_data():
             increasmentdownload.increasement_download()
             html_downloader_requests.download_htmls()
             esimporter.ESImporter().import_to_db()
-            esimporter.ESImporterFromHTMLContent().import_to_db()
-
+            # esimporter_html.ESImporterFromHTMLContent().import_to_db()
         except Exception as e:
             logging.exception(f"Error in main_flow.py: {e}")
         time.sleep(10 * 60)  # sleep for 10 minutes
@@ -79,6 +80,7 @@ def stop_services():
                 print('stop service failed')
 
 def start_services():
+    # Log.setup()
     start_web()
     start_es()
     start_api_server()
