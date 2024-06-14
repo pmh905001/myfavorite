@@ -68,6 +68,19 @@ def get_page(url, headers, max_behot_time=0, latest_ids_downloaded=[]):
             if record['id'] in latest_ids_downloaded:
                 page['data'] = page['data'][:index]
                 page['has_more'] = False
+    elif max_behot_time==0:        
+        logging.warning('----------------------------------------------------------------------------')
+        logging.warning('----------------------------------------------------------------------------')
+        logging.warning('----------------------------------------------------------------------------')
+        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
+        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
+        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
+        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
+        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
+        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
+        logging.warning('----------------------------------------------------------------------------')
+        logging.warning('----------------------------------------------------------------------------')
+        logging.warning('----------------------------------------------------------------------------')
 
     return page
 
