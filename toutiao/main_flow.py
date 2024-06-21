@@ -29,7 +29,7 @@ def start_backend_to_fetch_data():
             increasmentdownload.increasement_download()
             html_downloader_requests.download_htmls()
             esimporter.ESImporter().import_to_db()
-            # esimporter_html.ESImporterFromHTMLContent().import_to_db()
+            esimporter_html.ESImporterFromHTMLContent().import_to_db()
         except Exception as e:
             logging.exception(f"Error in main_flow.py: {e}")
         time.sleep(10 * 60)  # sleep for 10 minutes
