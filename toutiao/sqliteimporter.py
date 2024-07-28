@@ -1,7 +1,7 @@
 import json
 import sqlite3
 
-from toutiao.dbimporter import DBImporter
+from dbimporter import DBImporter
 
 
 class SqliteImporter(DBImporter):
