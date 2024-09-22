@@ -12,11 +12,8 @@ from fulldownload import read_curl
 
 def read_cookie():
     with open('cookie.txt', 'r') as f:
-        cookie = f.read().split(':')
-    return {cookie[0]: cookie[1]}
-
-    # _, headers = read_curl()
-    # return {'cookie': headers.get('cookie')}
+        cookie = f.read().split(':',1)
+    return {cookie[0]: cookie[1].strip()}
 
 
 def send_request(id, url, html_file_name):
