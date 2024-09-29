@@ -1,6 +1,7 @@
 __pycache__/
 .idea/
 toutiao/curl_cmd2.txt
+toutiao/curl_cmd.txt
 myfav.db
 toutiao/toutiao-myfavorites.txt
 toutiao/files/*myfavorites-*.txt
