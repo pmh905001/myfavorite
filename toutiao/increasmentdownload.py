@@ -38,6 +38,8 @@ def increasement_download():
         sleep_time = random.randint(1, 10)
         print(f'-------------------------------------------page number: {try_num}, sleep {sleep_time} seconds')
         time.sleep(sleep_time)
+        if try_num % 200==0:
+            file_name = f'myfavorites-{time.strftime("%Y%m%d-%H%M%S")}.txt'
         page = get_page(url, headers, max_behot_time, latest_ids_downloaded)
     else:
         write_page(page, f'files/{file_name}')
