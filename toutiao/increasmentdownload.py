@@ -30,7 +30,9 @@ def increasement_download():
     latest_ids_downloaded = latest_ids_from_file()
     page = get_page(url, headers, 0, latest_ids_downloaded)
     try_num = 0
-    file_name = f'myfavorites-{time.strftime("%Y%m%d-%H%M%S")}.txt'
+    decrease_number=100000
+    prefix=f'myfavorites-{time.strftime("%Y%m%d-%H%M%S")}'
+    file_name = f'{prefix}-{decrease_number}.txt'
     while page['has_more']:
         try_num += 1
         max_behot_time = page['next']['max_behot_time']
@@ -39,7 +41,8 @@ def increasement_download():
         print(f'-------------------------------------------page number: {try_num}, sleep {sleep_time} seconds')
         time.sleep(sleep_time)
         if try_num % 200==0:
-            file_name = f'myfavorites-{time.strftime("%Y%m%d-%H%M%S")}.txt'
+            decrease_number-=200
+            file_name = f'{prefix}-{str(decrease_number).zfill(6)}.txt'
         page = get_page(url, headers, max_behot_time, latest_ids_downloaded)
     else:
         write_page(page, f'files/{file_name}')
