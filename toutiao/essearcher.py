@@ -50,6 +50,10 @@ class ESSearcher(ES):
     def search(self, keywords, page=1, size=SIZE):
         response = self.query(keywords, page, size)
         self.display(response)
+        
+        
+    def delete(self, id):
+        self.client.delete(index=self.index,id=id)
 
 
 if __name__ == '__main__':
@@ -57,4 +61,6 @@ if __name__ == '__main__':
     # ESSearcher(url='http://192.168.3.185:9200').search('python 内存管理')
     # ESSearcher(url='http://192.168.3.185:9200').search('')
     # ESSearcher().search('', 1, 100)
-    ESSearcher().search('requests', 1, 100)
+    # ESSearcher().search('requests', 1, 100)
+    
+    ESSearcher().delete('requests')

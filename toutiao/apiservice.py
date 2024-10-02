@@ -20,6 +20,11 @@ def search():
     resp.headers['Content-Type'] = 'application/json'
     return resp
 
+@app.route('/remove', methods=['DELETE'])
+def delete():
+    id = request.args.get('id')
+    ESSearcher().delete(id)
+
 @app.route('/myfavs', methods=['GET'])
 def myfavs():
     return render_template('myfavs.html')
