@@ -10,19 +10,14 @@ from bs4 import BeautifulSoup
 from fulldownload import read_curl
 
 
-def read_cookie():
-    with open('cookie.txt', 'r') as f:
-        cookie = f.read().split(':',1)
-    return {cookie[0]: cookie[1].strip()}
-
-
 def send_request(id, url, html_file_name):
-    response: requests.Response = requests.get(url, headers=read_cookie(), allow_redirects=False)
+    url, headers = read_curl()
+    response: requests.Response = requests.get(url, headers=headers, allow_redirects=False)
     count = 0
     while response.is_redirect and count < 10:
         location = response.headers['Location']
         print(f'redirect to {location}')
-        response = requests.get(location, headers=read_cookie(), allow_redirects=False)
+        response = requests.get(location, headers=headers, allow_redirects=False)
         count += 1
     if response.is_redirect:
         logging.warning(f'dead redirect more than 10 times: {location}')

@@ -87,6 +87,8 @@ def start_services():
     start_browser()
     atexit.register(stop_services)
     start_backend_to_fetch_data()
+    while True:
+        time.sleep(10 * 60)  # sleep for 10 minutes
 
 
 if __name__ == '__main__':
