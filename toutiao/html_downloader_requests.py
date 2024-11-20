@@ -11,7 +11,7 @@ from fulldownload import read_curl
 
 
 def send_request(id, url, html_file_name):
-    url, headers = read_curl()
+    _, headers = read_curl()
     response: requests.Response = requests.get(url, headers=headers, allow_redirects=False)
     count = 0
     while response.is_redirect and count < 10:
