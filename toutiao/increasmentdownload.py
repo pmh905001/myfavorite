@@ -15,7 +15,12 @@ def latest_ids_from_file():
     my_favorite_files = sorted([f for f in os.listdir('files') if f.startswith('myfavorites-')], reverse=True)
     for file_name in my_favorite_files:
         with open(f'files/{file_name}', 'r', encoding='utf-8') as f:
-            page: dict = json.loads(f.readline())
+            line=f.readline()
+            try:
+                page: dict = json.loads(line)
+            except json.decoder.JSONDecodeError as e:
+                logging.exception(f"{file_name} is not json format! {line}")
+                continue
             if page.get('data'):
                 for record in page['data']:
                     if len(ids) <= 100:

@@ -14,6 +14,7 @@ def send_request(id, url, html_file_name):
     _, headers = read_curl()
     response: requests.Response = requests.get(url, headers=headers, allow_redirects=False)
     count = 0
+    location=None
     while response.is_redirect and count < 10:
         location = response.headers['Location']
         print(f'redirect to {location}')
@@ -31,7 +32,7 @@ def send_request(id, url, html_file_name):
             article_content = soup.select_one('.article-content')
             wtt_content = soup.select_one('.wtt-content')
             main_content = soup.select_one('.main-content')
-            print((article_content or wtt_content or main_content).get_text())
+            print((article_content or wtt_content or main_content or soup).get_text())
         except:
             logging.warning(f"can't find content for url: {location}")
 

@@ -131,9 +131,14 @@ class ESImporterFromHTMLContent(ES, DBImporter):
         files = sorted(files, reverse=True)
         result = []
         for file in files:
+            print(f"file_name={file}")
             with open(f'files/{file}', 'r', encoding='utf-8') as f:
                 for line_number, line in enumerate(f):
-                    page = json.loads(line)
+                    try:
+                        page = json.loads(line)
+                    except json.JSONDecodeError as e:
+                        logging.exception(f"------------line={line}")
+                        continue
                     if last_id in page:
                         if not line_number == 0:
                             result.append((file, line_number, -1))
