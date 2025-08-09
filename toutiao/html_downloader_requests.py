@@ -87,9 +87,13 @@ def find_last_id_from_html_file(html_file_name):
     if html_file_name:
         with open(f'files/{html_file_name}', 'r', encoding='utf-8') as html_file:
             lines = html_file.readlines()
+            lines=[l.strip() for l in lines if l and l.strip()]
             if lines:
-                last_line = lines[len(lines) - 1]
-                return list(json.loads(last_line).keys())[0]
+                last_line = lines[- 1]
+                last_line_obj:dict = json.loads(last_line)
+                keys = last_line_obj.keys()
+                logging.error(f"keys={keys}")        
+                return list(keys)[0]
     return None
 
 
@@ -99,6 +103,7 @@ def find_to_download_html_files():
     to_download_files = all_html_files - html_files
 
     last_html_file = sorted(html_files, reverse=True)[0] if html_files else None
+    logging.error(f"---------------00:last_html_file={last_html_file}")
     next_pos = _next_position(last_html_file)
 
     result = sorted([(file_name.replace('htmlcontent-', ''), 0, 0) for file_name in to_download_files])

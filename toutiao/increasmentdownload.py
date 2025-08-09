@@ -42,7 +42,7 @@ def increasement_download():
         try_num += 1
         max_behot_time = page['next']['max_behot_time']
         write_page(page, f'files/{file_name}')
-        sleep_time = random.randint(1, 10)
+        sleep_time = random.randint(1, 2)
         print(f'-------------------------------------------page number: {try_num}, sleep {sleep_time} seconds')
         time.sleep(sleep_time)
         if try_num % 200==0:
@@ -96,4 +96,5 @@ def get_page(url, headers, max_behot_time=0, latest_ids_downloaded=[]):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     increasement_download()
