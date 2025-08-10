@@ -86,8 +86,7 @@ def download_htmls():
 def find_last_id_from_html_file(html_file_name):
     if html_file_name:
         with open(f'files/{html_file_name}', 'r', encoding='utf-8') as html_file:
-            lines = html_file.readlines()
-            lines=[l.strip() for l in lines if l and l.strip()]
+            lines=[l for l in html_file.readlines() if l and l.strip()]
             if lines:
                 last_line = lines[- 1]
                 last_line_obj:dict = json.loads(last_line)
