@@ -4,8 +4,8 @@ import increasmentdownload
 import html_downloader_requests
 import esimporter
 import esimporter_html
-import apiservice
-import threading
+# import apiservice
+# import threading
 import time
 import subprocess
 import webbrowser
@@ -86,7 +86,7 @@ def start_services():
     start_api_server()
     start_browser()
     atexit.register(stop_services)
-    start_backend_to_fetch_data()
+    # start_backend_to_fetch_data()
     while True:
         time.sleep(10 * 60)  # sleep for 10 minutes
 

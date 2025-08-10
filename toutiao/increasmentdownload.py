@@ -73,6 +73,7 @@ def get_page(url, headers, max_behot_time=0, latest_ids_downloaded=[]):
     url = replace_url_param(url, 'max_behot_time', max_behot_time)
     response = requests.get(url, headers=headers)
     page: dict = response.json()
+    
     if page.get('data'):
         for index, record in enumerate(page.get('data')):
             if record['id'] in latest_ids_downloaded:

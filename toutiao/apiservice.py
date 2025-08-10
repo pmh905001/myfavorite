@@ -1,13 +1,18 @@
 import json
+from threading import Thread
 
 from flask import Flask, request, make_response, render_template
+from flask_socketio import SocketIO
 
 from essearcher import ESSearcher
 from flask_cors import CORS, cross_origin
 
 
+
+
 app = Flask(__name__, template_folder='../views')
 
+socketio = SocketIO(app,cors_allowed_origins="*")
 
 @app.route('/search', methods=['GET'])
 # @cross_origin()
@@ -28,6 +33,10 @@ def search():
     resp.status = '200'
     resp.headers['Access-Control-Allow-Origin'] = "*"
     resp.headers['Content-Type'] = 'application/json'
+    
+    # from flask_socketio import send
+    # send(f'has more at-------------------------------------')
+    # print("--------------------------------------------------------------send")
     return resp
 
 @app.route('/remove', methods=['DELETE'])
@@ -43,7 +52,13 @@ def delete():
     # return resp
     return ""
     
-    
+
+# @app.before_first_request
+def start_background_task():
+    from main_flow import start_backend_to_fetch_data
+    thread = Thread(target=start_backend_to_fetch_data)
+    thread.daemon = True
+    thread.start()    
     
 
 @app.route('/myfavs', methods=['GET'])
@@ -55,8 +70,10 @@ def myfavs():
 def run_app():
     app.jinja_env.variable_start_string = '[['
     app.jinja_env.variable_end_string = ']]'
-    app.run(debug=True)
+    # app.run(debug=True)
+    socketio.run(app, debug=True)
 
 
 if __name__ == '__main__':
+    start_background_task()
     run_app()
