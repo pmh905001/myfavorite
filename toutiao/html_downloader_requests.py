@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from fulldownload import read_curl
 
 
-def send_request(id, url, html_file_name):
+def send_request(id, url, out_file):
     _, headers = read_curl()
     response: requests.Response = requests.get(url, headers=headers, allow_redirects=False)
     count = 0
@@ -24,24 +24,36 @@ def send_request(id, url, html_file_name):
         logging.warning(f'dead redirect more than 10 times: {location}')
         return
 
-    with open(f'files/{html_file_name}', 'a', encoding='utf-8') as file:
-        resp_text = response.text
 
-        try:
-            soup = BeautifulSoup(resp_text, 'html.parser')
-            article_content = soup.select_one('.article-content')
-            wtt_content = soup.select_one('.wtt-content')
-            main_content = soup.select_one('.main-content')
-            print((article_content or wtt_content or main_content or soup).get_text())
-        except:
-            logging.warning(f"can't find content for url: {location}")
 
-        record = json.dumps({id: resp_text}, ensure_ascii=False)
-        file.write(record)
-        file.write('\n')
-    sleep_seconds = random.randint(1, 2)
-    print(f'start to sleep {sleep_seconds} seconds')
-    time.sleep(sleep_seconds)
+
+    # with open(f'files/{html_file_name}', 'a', encoding='utf-8') as file:
+    #     resp_text = response.text
+
+    #     try:
+    #         soup = BeautifulSoup(resp_text, 'html.parser')
+    #         article_content = soup.select_one('.article-content')
+    #         wtt_content = soup.select_one('.wtt-content')
+    #         main_content = soup.select_one('.main-content')
+    #         print((article_content or wtt_content or main_content or soup).get_text())
+    #     except:
+    #         logging.warning(f"can't find content for url: {location}")
+
+    #     record = json.dumps({id: resp_text}, ensure_ascii=False)
+    #     file.write(record)
+    #     file.write('\n')
+    # sleep_seconds = random.randint(1, 2)
+    # print(f'start to sleep {sleep_seconds} seconds')
+    # time.sleep(sleep_seconds)
+
+
+
+
+    resp_text = response.text
+    record = json.dumps({id: resp_text}, ensure_ascii=False)
+    out_file.write(record)
+    out_file.write('\n')
+    out_file.flush()
 
 
 def read_id_urls(file_name, line_number, record_number):
@@ -136,12 +148,13 @@ def download_html_from_one_file(file_name, line_number, record_number):
     # file_name = 'myfavorites-20240324-180714.txt'
     id_urls = read_id_urls(file_name, line_number, record_number)
     html_file_name = f'htmlcontent-{file_name}'
-    for id, url in id_urls:
-        print(f'id={id}, url={url}')
-        try:
-            send_request(id, url, html_file_name)
-        except:
-            logging.exception(f'ignore the exception for id: {id} url: {url}')
+    with open(f'files/{html_file_name}', 'a', encoding='utf-8') as out_file:
+        for id, url in id_urls:
+            print(f'id={id}, url={url}')
+            try:
+                send_request(id, url, out_file)
+            except:
+                logging.exception(f'ignore the exception for id: {id} url: {url}')
 
 
 if __name__ == '__main__':
