@@ -7,6 +7,7 @@ from urllib.parse import urlsplit, urlunsplit, parse_qs, urlencode
 
 import curlparser
 import requests
+import re
 
 
 def read_curl():
@@ -16,6 +17,12 @@ def read_curl():
     curl = curlparser.parse(curl_cmd)
     # trim the bank of string
     headers = {key: value.strip() for key, value in curl.header.items()}
+
+
+    cookie_match = re.search(r'-b\s+[\'"]([^\'"]+)[\'"]', curl_cmd)
+    if cookie_match:
+        cookie_value = cookie_match.group(1)
+        headers['Cookie'] = cookie_value
     return curl.url, headers
 
 
@@ -33,6 +40,16 @@ def replace_url_param(url, param_name, new_value):
     new_query_string = urlencode(query_params, doseq=True)
     new_url = urlunsplit((scheme, netloc, path, new_query_string, fragment))
     return new_url
+
+def replace_url_param2(url, param_name, new_value):
+    import re
+    # Replace the parameter value in the query string, preserving the order and empty parameters
+    pattern = r'(\?|&)' + re.escape(param_name) + r'=[^&]*'
+    replacement = f'\g<1>{param_name}={new_value}'
+    new_url = re.sub(pattern, replacement, url)
+    return new_url
+
+
 
 
 def write_page(page):

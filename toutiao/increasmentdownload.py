@@ -3,11 +3,14 @@ import json
 import logging
 import os
 import random
+import subprocess
 import time
 
 import requests
 
-from fulldownload import read_curl, replace_url_param
+from fulldownload import read_curl, replace_url_param2
+import curl
+
 
 
 def latest_ids_from_file():
@@ -54,43 +57,41 @@ def increasement_download():
 
 
 def write_page(page, file_name):
-    if not page.get('data'):
-        return
-    with open(file_name, 'a', encoding='utf-8') as fp:
-        page_info = json.dumps(page, ensure_ascii=False)
-        fp.write(page_info)
-        fp.write('\n')
+    pass
+    # if not page.get('data'):
+    #     return
+    # with open(file_name, 'a', encoding='utf-8') as fp:
+    #     page_info = json.dumps(page, ensure_ascii=False)
+    #     fp.write(page_info)
+    #     fp.write('\n')
 
-    for item in page['data']:
-        try:
-            print(f"{item['id']}: {item['title']}   => {item['share_url']}")
-        # Fixme: UnicodeEncodeError
-        except UnicodeEncodeError:
-            logging.exception('occurred exception when print')
+    # for item in page['data']:
+    #     try:
+    #         print(f"{item['id']}: {item['title']}   => {item['share_url']}")
+    #     # Fixme: UnicodeEncodeError
+    #     except UnicodeEncodeError:
+    #         logging.exception('occurred exception when print')
 
 
 def get_page(url, headers, max_behot_time=0, latest_ids_downloaded=[]):
-    url = replace_url_param(url, 'max_behot_time', max_behot_time)
-    response = requests.get(url, headers=headers)
-    page: dict = response.json()
-    if page.get('data'):
-        for index, record in enumerate(page.get('data')):
-            if record['id'] in latest_ids_downloaded:
-                page['data'] = page['data'][:index]
-                page['has_more'] = False
-    elif max_behot_time==0:        
-        logging.warning('----------------------------------------------------------------------------')
-        logging.warning('----------------------------------------------------------------------------')
-        logging.warning('----------------------------------------------------------------------------')
-        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
-        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
-        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
-        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
-        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
-        logging.warning('---------------Warning:curl_cmd.txt have expired----------------------------')
-        logging.warning('----------------------------------------------------------------------------')
-        logging.warning('----------------------------------------------------------------------------')
-        logging.warning('----------------------------------------------------------------------------')
+    # print(f'-------------url1={url}')
+    # url = replace_url_param(url, 'max_behot_time', max_behot_time)
+    # print(f'-------------url2={url}')
+
+
+    url = replace_url_param2(url, 'max_behot_time', max_behot_time)
+
+
+
+
+
+
+    # cmd = ['curl', '-s', url] + [item for k, v in headers.items() for item in ['-H', f'{k}: {v}']]
+    # result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+    # result = curl.execute_curl()
+    result = curl.execute(url,headers)
+    page: dict = json.loads(result.stdout)
+    
 
     return page
 
@@ -98,3 +99,12 @@ def get_page(url, headers, max_behot_time=0, latest_ids_downloaded=[]):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     increasement_download()
+
+
+    # cmd = ['curl', '-s', "https://www.baidu.com"]
+    # cmd = ['curl', '-s', "https://www.toutiao.com/"]
+    # print(f'--------------------------{cmd}')
+
+    # result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+    # print(f'--------------------------{result}')
+    # print(f'--------------------------{result.stdout}')

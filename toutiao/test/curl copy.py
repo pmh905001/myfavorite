@@ -2,7 +2,7 @@ import subprocess
 import curlparser
 import re
 
-def execute_curl():
+if __name__ == '__main__':
     with open('curl_cmd.txt', 'r', encoding='utf-8') as f:
         curl_cmd = f.read().replace('--compressed', '')
 
@@ -15,17 +15,11 @@ def execute_curl():
     if cookie_match:
         cookie_value = cookie_match.group(1)
         headers['Cookie'] = cookie_value
-    
-    return execute(url, headers)
 
-def execute(url, headers):
     cmd = ['curl', '-s', url] + [item for k, v in headers.items() for item in ['-H', f'{k}: {v}']]
+
     # print(f"Executing: {' '.join(cmd)}")
     result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
-    return result
-
-if __name__ == '__main__':
-    result = execute_curl()
     print(f"Return code: {result.returncode}")
     print(f"Stdout: {result.stdout}")
     print(f"Stderr: {result.stderr}")
